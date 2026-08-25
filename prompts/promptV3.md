@@ -61,4 +61,10 @@ Não crie um sistema tecnológico complexo nem transforme o time criativo em uma
 
 ## Resultado gerado
 
-Este arquivo documenta apenas a crítica e a reescrita do prompt (V2 → V3). O prompt V3 ainda não foi executado para gerar uma nova versão de [processo-precificacao.md](../contexto/processo-precificacao.md) — isso fica para a próxima rodada semanal de uso.
+Prompt V3 executado: [contexto/processo-precificacao.md](../contexto/processo-precificacao.md) foi revisado (não recriado do zero) a partir da versão vigente. Três ajustes principais:
+
+- Papel do Criativo na classificação cobrável/institucional deixado explícito: ele só aponta blocos do catálogo, não julga custo — a etiqueta cobrável/institucional já vem definida no catálogo por Atendimento/Produção. Atendimento confirma e só decide de fato em caso de exceção ao padrão.
+- Momento de entrada da Produção destacado como nota própria logo após o fluxo: uma única vez, na etapa 6 (checkpoint), nunca antes.
+- Nova seção "5. O que mudou em relação à versão anterior" adicionada ao documento, como pedido no item 5 do FORMATO.
+
+Fluxo, tabela de etapas, exemplo prático com faixas simbólicas e os três indicadores já existentes na versão anterior foram mantidos sem alteração de conteúdo.
