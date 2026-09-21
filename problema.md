@@ -57,7 +57,7 @@ Uma só: a que mais dói.
 
 | Métrica | Alvo | Como confiro |
 |---|---|---|
-| Dias corridos entre "ganhamos a concorrência" e "orçamento liberado ao cliente", descontadas as pausas em que a bola está com o cliente | Mediana de **21 dias** e **nenhum projeto acima de 42 dias**, até **dezembro de 2026** | Comparo as duas datas de cada projeto na planilha de controle do Atendimento, **quinzenalmente**, na reunião de status |
+| Dias corridos entre "ganhamos a concorrência" e "orçamento liberado ao cliente", descontadas as pausas em que a bola está com o cliente | Mediana de **21 dias** e **nenhum projeto acima de 42 dias**, até **31/12/2026** | Comparo as duas datas de cada projeto na planilha de controle do Atendimento, **quinzenalmente**, na reunião de status |
 
 ### Por que esta e não outra
 

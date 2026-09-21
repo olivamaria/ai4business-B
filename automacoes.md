@@ -49,23 +49,51 @@ Arquivo das regras: [regras.md](regras.md) — 3 regras.
 | 2 — Fatia do mês parada aguardando aprovação | FakeERP, relatório do mês | pendente acima de 25% do `totalAmount` |
 | 3 — Receita reconhecida abaixo do piso | FakeERP, relatório do mês | receita paga abaixo de R$ 2.000,00 |
 
-**Como roda:** à mão, toda segunda-feira. Não há rotina agendada — ver a justificativa na auditoria acima.
+**Nome da rotina:** Verificação semanal de risco financeiro — aplica as 3 regras acima sobre o mês corrente do FakeERP.
+
+**Como roda:** à mão, toda segunda-feira. Não há horário fixo registrado — cada execução foi rodada quando havia tempo disponível no dia, não em um horário travado. Não há rotina agendada (Routines) — ver a justificativa na auditoria acima.
 
 **Onde a ação aparece:** arquivo em `alertas/AAAA-MM-DD.md`, no repositório.
 
+### O prompt que ela roda
+
+**Aviso:** as execuções de 18/09 abaixo foram rodadas antes de este arquivo declarar o prompt formalmente, e o texto exato usado naquele dia não ficou registrado. O prompt abaixo é uma reconstrução do que as regras descrevem — não é uma transcrição literal da conversa de 18/09. A partir da próxima execução, o texto realmente colado no Claude Code será registrado aqui, verbatim.
+
+```
+Leia regras.md e fake-erp.md deste repositório.
+
+Autentique no FakeERP e busque GET /report/{ano}/{mes} para o mês {mês corrente}.
+
+Aplique as três regras de regras.md sobre o resultado:
+1. Existe pedido CANCELLED com total > R$ 200,00?
+2. A soma de total dos pedidos PENDING passa de 25% do totalAmount do mês?
+3. A soma de total dos pedidos PAID (receita paga) fica abaixo de R$ 2.000,00?
+
+Para cada regra, diga: quantos pedidos foram olhados no total, se a condição
+disparou, e qual número decidiu (o maior cancelado, o percentual pendente,
+ou a receita paga apurada).
+
+Se a fonte vier vazia ou o mês não tiver pedido nenhum, escreva "FONTE
+INDISPONÍVEL" em vez de ficar em silêncio — nunca invente número.
+
+Escreva o resultado em alertas/AAAA-MM-DD.md, um bloco por mês consultado.
+```
+
 ## Execuções
 
-| Data | Regra | Fonte | Pedidos olhados | Disparou? | Número que decidiu |
-|---|---|---|---|---|---|
-| 18/09 | 1 — cancelado | FakeERP 01/2026 | 4 | **sim** | maior cancelado R$ 225,00 |
-| 18/09 | 2 — pendente | FakeERP 01/2026 | 4 | **sim** | 42,0% (R$ 1.200,00 de R$ 2.855,00) |
-| 18/09 | 3 — receita paga | FakeERP 01/2026 | 4 | **sim** | receita paga R$ 1.430,00 |
-| 18/09 | 1 — cancelado | FakeERP 03/2026 | 3 | **sim** | maior cancelado R$ 1.500,00 |
-| 18/09 | 2 — pendente | FakeERP 03/2026 | 3 | não | 17,9% (R$ 500,00 de R$ 2.800,00) |
-| 18/09 | 3 — receita paga | FakeERP 03/2026 | 3 | **sim** | receita paga R$ 800,00 |
-| 18/09 | 1 — cancelado | FakeERP 05/2026 | 0 | não | sem dado |
-| 18/09 | 2 — pendente | FakeERP 05/2026 | 0 | não | sem dado |
-| 18/09 | 3 — receita paga | FakeERP 05/2026 | 0 | não | sem dado |
+| Data | Hora | Regra | Fonte | Pedidos olhados | Disparou? | Número que decidiu |
+|---|---|---|---|---|---|---|
+| 18/09 | não registrada | 1 — cancelado | FakeERP 01/2026 | 4 | **sim** | maior cancelado R$ 225,00 |
+| 18/09 | não registrada | 2 — pendente | FakeERP 01/2026 | 4 | **sim** | 42,0% (R$ 1.200,00 de R$ 2.855,00) |
+| 18/09 | não registrada | 3 — receita paga | FakeERP 01/2026 | 4 | **sim** | receita paga R$ 1.430,00 |
+| 18/09 | não registrada | 1 — cancelado | FakeERP 03/2026 | 3 | **sim** | maior cancelado R$ 1.500,00 |
+| 18/09 | não registrada | 2 — pendente | FakeERP 03/2026 | 3 | não | 17,9% (R$ 500,00 de R$ 2.800,00) |
+| 18/09 | não registrada | 3 — receita paga | FakeERP 03/2026 | 3 | **sim** | receita paga R$ 800,00 |
+| 18/09 | não registrada | 1 — cancelado | FakeERP 05/2026 | 0 | não | sem dado |
+| 18/09 | não registrada | 2 — pendente | FakeERP 05/2026 | 0 | não | sem dado |
+| 18/09 | não registrada | 3 — receita paga | FakeERP 05/2026 | 0 | não | sem dado |
+
+A coluna Hora está vazia por uma lacuna real: o horário não foi anotado no momento da execução de 18/09. Registrado aqui em vez de preenchido com um chute — a partir da próxima execução, a hora entra na tabela.
 
 Alertas gerados: [alertas/2026-09-18.md](alertas/2026-09-18.md).
 
