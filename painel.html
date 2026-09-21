@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Painel — Fonte canônica</title>
+<style>
+  :root{
+    --bg:#f6f6f4; --surface:#fff; --border:#e2e0da; --ink:#1a1a18; --muted:#6b6862;
+    --accent:#1f5f4f; --warn:#8a5a1f; --alert:#8c3327; --shadow:0 1px 2px rgba(0,0,0,.05);
+  }
+  @media (prefers-color-scheme:dark){
+    :root:not([data-theme="light"]){
+      --bg:#17181a; --surface:#1f2124; --border:#33363b; --ink:#ececea; --muted:#9a9791;
+      --accent:#5fbfa4; --warn:#d9a24f; --alert:#e07a6a; --shadow:none;
+    }
+  }
+  :root[data-theme="dark"]{
+    --bg:#17181a; --surface:#1f2124; --border:#33363b; --ink:#ececea; --muted:#9a9791;
+    --accent:#5fbfa4; --warn:#d9a24f; --alert:#e07a6a; --shadow:none;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);
+       font:16px/1.5 ui-sans-serif,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif}
+  .wrap{max-width:960px;margin:0 auto;padding:32px 16px 56px}
+  header{margin-bottom:24px}
+  h1{font-size:1.5rem;margin:0 0 4px;letter-spacing:-.01em}
+  .sub{color:var(--muted);font-size:.9rem}
+  .controls{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:20px 0 8px}
+  .seg{display:inline-flex;border:1px solid var(--border);border-radius:8px;overflow:hidden;background:var(--surface)}
+  .seg button{appearance:none;border:0;background:transparent;color:var(--muted);
+    padding:7px 13px;font:inherit;font-size:.85rem;cursor:pointer}
+  .seg button[aria-pressed="true"]{background:var(--accent);color:#fff}
+  .spacer{flex:1}
+  .banner{border-radius:8px;padding:13px 16px;margin:0 0 18px;font-size:.88rem;line-height:1.5;
+    border:1px solid var(--alert);background:var(--surface);color:var(--ink)}
+  .banner b{color:var(--alert)}
+  .banner ul{margin:7px 0 0;padding-left:20px;color:var(--muted);font-size:.85rem}
+  .note{background:var(--surface);border:1px solid var(--border);border-left:3px solid var(--warn);
+    border-radius:6px;padding:11px 14px;font-size:.85rem;color:var(--muted);margin:14px 0 22px}
+  .note b{color:var(--ink);font-weight:600}
+  .cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(215px,1fr));gap:14px}
+  .card{background:var(--surface);border:1px solid var(--border);border-radius:10px;
+    padding:18px 20px;box-shadow:var(--shadow)}
+  .card .label{font-size:.72rem;text-transform:uppercase;letter-spacing:.07em;color:var(--muted)}
+  .card .value{font-size:2.1rem;font-weight:650;letter-spacing:-.02em;margin:7px 0 5px;
+    font-variant-numeric:tabular-nums}
+  .card .rule{font-size:.78rem;color:var(--muted);line-height:1.45}
+  .card.money .value{color:var(--accent)}
+  .card.qual .value{color:var(--alert)}
+  h2{font-size:1rem;margin:34px 0 10px;font-weight:620}
+  table{width:100%;border-collapse:collapse;background:var(--surface);
+    border:1px solid var(--border);border-radius:10px;overflow:hidden;font-size:.88rem}
+  th,td{padding:9px 13px;text-align:left;border-bottom:1px solid var(--border)}
+  th{font-size:.72rem;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);font-weight:600}
+  tbody tr:last-child td{border-bottom:0}
+  td.num{text-align:right;font-variant-numeric:tabular-nums}
+  th.num{text-align:right}
+  .tag{display:inline-block;padding:1px 8px;border-radius:99px;font-size:.72rem;
+    font-weight:600;border:1px solid}
+  .tag.PAID{color:var(--accent);border-color:var(--accent)}
+  .tag.PENDING{color:var(--warn);border-color:var(--warn)}
+  .tag.CANCELLED{color:var(--alert);border-color:var(--alert)}
+  tr.out td:not(.st){opacity:.45}
+  .empty{background:var(--surface);border:1px dashed var(--border);border-radius:10px;
+    padding:26px;text-align:center;color:var(--muted);font-size:.9rem}
+  footer{margin-top:34px;padding-top:16px;border-top:1px solid var(--border);
+    font-size:.8rem;color:var(--muted);line-height:1.7}
+  code{background:var(--bg);border:1px solid var(--border);border-radius:4px;padding:1px 5px;font-size:.92em}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <h1>Painel — Fonte canônica</h1>
+  <div class="sub">Agência Samba · projeto de padronização da precificação · base de ensaio</div>
+</header>
+
+<div id="aviso"></div>
+
+<div class="controls">
+  <div class="seg" id="meses"></div>
+  <div class="spacer"></div>
+  <div class="seg" id="visao">
+    <button data-v="fin" aria-pressed="true">Visão financeiro</button>
+    <button data-v="com" aria-pressed="false">Visão comercial</button>
+  </div>
+</div>
+
+<div class="note" id="nota"></div>
+
+<div class="cards">
+  <div class="card">
+    <div class="label">Volume</div>
+    <div class="value" id="v1">—</div>
+    <div class="rule">Pedidos no mês, incluindo cancelado e pendente. Mede trabalho realizado, não dinheiro.</div>
+  </div>
+  <div class="card money">
+    <div class="label" id="l2">Dinheiro</div>
+    <div class="value" id="v2">—</div>
+    <div class="rule" id="r2"></div>
+  </div>
+  <div class="card qual">
+    <div class="label">Qualidade</div>
+    <div class="value" id="v3">—</div>
+    <div class="rule">Fatia parada aguardando aprovação: soma dos <code>PENDING</code> sobre o total do mês. É o gargalo, medido.</div>
+  </div>
+</div>
+
+<h2>As linhas que geraram cada número</h2>
+<div id="tabela"></div>
+
+<footer>
+  Números calculados a partir de <code>dados/amostra.csv</code> (12 linhas), com as definições declaradas em <code>dados/fonte.md</code>.<br>
+  Dados extraídos do FakeERP em <b>21/09/2026</b> · painel gerado em <b>21/09/2026</b>.<br>
+  Base de treino da disciplina, não é dado da Agência Samba. Ver <code>fake-erp.md</code>.
+</footer>
+
+</div>
+<script>
+const CSV = `pedido_id,data,valor,desconto,total,status
+1001,2026-01-05,1000.00,50.00,950.00,PAID
+1002,2026-01-12,480.00,0.00,480.00,PAID
+1003,2026-01-20,250.00,25.00,225.00,CANCELLED
+1004,2026-01-28,1320.50,120.50,1200.00,PENDING
+1005,2026-02-03,760.00,60.00,700.00,PAID
+1006,2026-02-15,199.90,0.00,199.90,PAID
+1007,2026-02-27,2500.00,250.00,2250.00,PAID
+1008,2026-03-08,540.00,40.00,500.00,PENDING
+1009,2026-03-19,880.00,80.00,800.00,PAID
+1010,2026-03-30,1500.00,0.00,1500.00,CANCELLED
+1011,2026-07-04,320.00,20.00,300.00,PAID
+1012,2026-07-16,4100.00,100.00,4000.00,PAID`;
+
+const STATUS_VALIDOS=["PAID","PENDING","CANCELLED"];
+const ignoradas=[];
+const brutas = CSV.trim().split("\n").slice(1);
+const linhas = brutas.map((l,i)=>{
+  const n=i+2;
+  if(!l.trim()){ ignoradas.push(`linha ${n}: vazia`); return null; }
+  const p=l.split(",");
+  if(p.length!==6){ ignoradas.push(`linha ${n}: esperava 6 colunas, veio ${p.length}`); return null; }
+  const [pedido_id,data,valor,desconto,total,status]=p;
+  if(!/^\d{4}-\d{2}-\d{2}$/.test(data)){ ignoradas.push(`linha ${n}: data fora do formato AAAA-MM-DD ("${data}")`); return null; }
+  if(!isFinite(+total)||+total<0){ ignoradas.push(`linha ${n}: total inválido ou negativo ("${total}")`); return null; }
+  if(!STATUS_VALIDOS.includes(status)){ ignoradas.push(`linha ${n}: status desconhecido ("${status}")`); return null; }
+  return {pedido_id,data,valor:+valor,desconto:+desconto,total:+total,status};
+}).filter(Boolean);
+
+function avisar(){
+  const el=document.getElementById("aviso");
+  if(!linhas.length){
+    el.innerHTML=`<div class="banner"><b>FONTE INDISPONÍVEL.</b> Nenhuma linha válida em <code>dados/amostra.csv</code>: li ${brutas.length} e ignorei ${ignoradas.length}. Nenhum número foi estimado.${ignoradas.length?`<ul>${ignoradas.map(m=>`<li>${m}</li>`).join("")}</ul>`:""}</div>`;
+    return false;
+  }
+  el.innerHTML = ignoradas.length
+    ? `<div class="banner"><b>Atenção:</b> li ${brutas.length} linhas e ignorei ${ignoradas.length}. Os números abaixo usam apenas as ${linhas.length} válidas.<ul>${ignoradas.map(m=>`<li>${m}</li>`).join("")}</ul></div>`
+    : "";
+  return true;
+}
+
+const NOMES={"01":"Janeiro","02":"Fevereiro","03":"Março","04":"Abril","05":"Maio","06":"Junho",
+             "07":"Julho","08":"Agosto","09":"Setembro","10":"Outubro","11":"Novembro","12":"Dezembro"};
+const mesesComDado=[...new Set(linhas.map(r=>r.data.slice(0,7)))].sort();
+
+let mesSel=mesesComDado[0], visao="fin";
+
+const brl=n=>n.toLocaleString("pt-BR",{style:"currency",currency:"BRL"});
+const rotulo=m=>m==="all"?"Todo o período":`${NOMES[m.slice(5,7)]} de ${m.slice(0,4)}`;
+
+function montarSeletor(){
+  const el=document.getElementById("meses");
+  el.innerHTML=[...mesesComDado,"all"].map(m=>
+    `<button data-m="${m}" aria-pressed="${m===mesSel}">${m==="all"?"Tudo":NOMES[m.slice(5,7)]}</button>`).join("");
+  el.querySelectorAll("button").forEach(b=>b.onclick=()=>{mesSel=b.dataset.m;montarSeletor();render();});
+}
+document.querySelectorAll("#visao button").forEach(b=>b.onclick=()=>{
+  visao=b.dataset.v;
+  document.querySelectorAll("#visao button").forEach(x=>x.setAttribute("aria-pressed",x.dataset.v===visao));
+  render();
+});
+
+function render(){
+  const rs = mesSel==="all" ? linhas : linhas.filter(r=>r.data.startsWith(mesSel));
+  const totalMes = rs.reduce((s,r)=>s+r.total,0);
+  const paga     = rs.filter(r=>r.status==="PAID").reduce((s,r)=>s+r.total,0);
+  const pendente = rs.filter(r=>r.status==="PENDING").reduce((s,r)=>s+r.total,0);
+  const pct      = totalMes ? pendente/totalMes*100 : 0;
+
+  document.getElementById("v1").textContent = rs.length;
+
+  if(visao==="fin"){
+    document.getElementById("l2").textContent="Dinheiro · receita paga";
+    document.getElementById("v2").textContent=brl(paga);
+    document.getElementById("r2").innerHTML=`Soma de <code>total</code> apenas dos <code>PAID</code>. Exclui cancelado e pendente.`;
+  }else{
+    document.getElementById("l2").textContent="Dinheiro · valor fechado";
+    document.getElementById("v2").textContent=brl(totalMes);
+    document.getElementById("r2").innerHTML=`Soma de <code>total</code> de <b>todas</b> as linhas, inclusive cancelado e pendente. É o <code>totalAmount</code> da API.`;
+  }
+
+  document.getElementById("v3").textContent = pct.toFixed(1).replace(".",",")+"%";
+
+  const dif = totalMes - paga;
+  document.getElementById("nota").innerHTML = dif > 0
+    ? `<b>${rotulo(mesSel)}:</b> o comercial diz ${brl(totalMes)} e o financeiro diz ${brl(paga)}. Nenhum dos dois está errado — a diferença de ${brl(dif)} é o que está cancelado ou aguardando aprovação. A regra de cálculo de cada um está em <code>dados/fonte.md</code>.`
+    : `<b>${rotulo(mesSel)}:</b> comercial e financeiro chegam ao mesmo número, ${brl(paga)}, porque todos os pedidos do período estão pagos. É o mês em que a diferença não aparece — e por isso ela passa despercebida.`;
+
+  const alvo=document.getElementById("tabela");
+  if(!rs.length){ alvo.innerHTML=`<div class="empty">Nenhum pedido no período. Zero linhas olhadas — silêncio por ausência de dado, não por tudo estar bem.</div>`; return; }
+  alvo.innerHTML=`<table><thead><tr>
+      <th>Pedido</th><th>Data</th><th class="num">Valor</th><th class="num">Desconto</th>
+      <th class="num">Total</th><th>Status</th><th>Entra em</th></tr></thead><tbody>`
+    + rs.map(r=>{
+        const entra = r.status==="PAID" ? "volume · receita paga"
+                    : r.status==="PENDING" ? "volume · fatia parada"
+                    : "volume";
+        return `<tr class="${r.status==="PAID"?"":"out"}">
+          <td>${r.pedido_id}</td>
+          <td>${r.data.split("-").reverse().join("/")}</td>
+          <td class="num">${brl(r.valor)}</td>
+          <td class="num">${r.desconto?brl(r.desconto):"—"}</td>
+          <td class="num">${brl(r.total)}</td>
+          <td class="st"><span class="tag ${r.status}">${r.status}</span></td>
+          <td>${entra}</td></tr>`;
+      }).join("")
+    + `</tbody></table>`;
+}
+
+if(avisar()){ montarSeletor(); render(); }
+</script>
+</body>
+</html>
