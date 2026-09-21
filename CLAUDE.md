@@ -2,6 +2,10 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
+## Read this first, in every conversation
+
+Before answering anything about this project, read every file in [`contexto/`](contexto/) and [`problema.md`](problema.md). They are the ground truth about who the author is, what Agência Samba sells, who buys, and what problem is being solved. Do this at the start of each conversation, without being asked — not only when the task looks like it needs it. An answer given before reading them will be generic, and generic is the exact failure this repository exists to avoid.
+
 ## What this repository is
 
 This is not a software project — it's a documentation/coursework repository (Link School of Business) built entirely in Portuguese Markdown. There is no build, lint, or test tooling; there is no source code to run. The work product is the Markdown content itself, produced through iterative AI prompting.
@@ -16,6 +20,7 @@ The subject is a real operational problem at Agência Samba (an experience/event
   - [`negocio.md`](contexto/negocio.md) — what Samba sells, to whom, and its (partially unconfirmed) business model.
   - [`cliente.md`](contexto/cliente.md) — who buys, why, and open questions about churn/complaints.
   - [`processo-precificacao.md`](contexto/processo-precificacao.md) — the current, living output: the standardized pricing process (Creative → Account handoff) that gets iterated on. Treat this file as the "vigente" (current) version to refine, not to regenerate from scratch.
+- [`prompts.md`](prompts.md) — the prompt library: for each recurring request, the winning version in full plus what was learned getting there. This is the shelf; `prompts/` is the draft history.
 - [`prompts/`](prompts/) — the versioned history of the prompt used to generate/refine `processo-precificacao.md` (V1 → V2 → V3 → Final). `promptFinal.md` is the reusable prompt intended to be re-run in future rounds without manual editing.
 
 ## Key conventions
