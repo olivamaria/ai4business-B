@@ -32,6 +32,7 @@ Este repositório é conteúdo, não software: Markdown em português, construí
 | [`automacoes.md`](automacoes.md) | O que está ligado, a auditoria manter/consertar/matar, a tabela de execuções das regras e como o painel é atualizado |
 | [`alertas/`](alertas/) | Os alertas que as regras produziram, um arquivo por data de execução |
 | [`testes.md`](testes.md) | Os três cenários de falha, quebrados de propósito: fonte fora do ar, dado sujo e condição que nunca dispara. Com o antes e o depois de cada conserto |
+| [`escala.md`](escala.md) | O portão: as cinco perguntas de "pronto para escalar?" respondidas com evidência de arquivo, e a decisão escrita. Hoje: não abre, e o primeiro item a virar sim é a medição da métrica |
 
 ## Os dados
 
